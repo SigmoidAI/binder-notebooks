@@ -1,90 +1,137 @@
-# binder-notebooks
+# Binder Notebooks
 
-This repository contains lesson notebooks, theory, and quizzes that can be opened in Binder.
+This repository contains interactive Jupyter notebooks for different lessons, organized with support for multiple languages and learning paths.
 
-## Quick start (this project setup)
+## 📚 Project Structure
 
-Use this Binder link to start the `binder-env` image and then pull this repository:
+```
+binder-notebooks/
+├── lesson_2_1/
+│   ├── notebooks/          # Interactive Jupyter notebooks
+│   │   ├── notebook_1/    # Lesson 2.1 - Notebook 1
+│   │   └── notebook_2/    # Lesson 2.1 - Notebook 2
+│   ├── theory/            # Theoretical content (EN, RO)
+│   └── quiz/              # Quiz questions (EN, RO)
+└── README.md
+```
 
-- https://mybinder.org/v2/gh/SigmoidAI/binder-env/main?urlpath=git-pull?repo=https://github.com/SigmoidAI/binder-notebooks.git
+## 🚀 Accessing Notebooks via Binder
 
-If the above link fails in some browsers, use the URL-encoded variant:
+### What is Binder?
 
-- https://mybinder.org/v2/gh/SigmoidAI/binder-env/main?urlpath=git-pull%3Frepo%3Dhttps://github.com/SigmoidAI/binder-notebooks.git
+Binder allows you to run Jupyter notebooks in the cloud without installing anything locally. Click a link and get an interactive notebook environment instantly!
 
-## Binder URL structure
+### URL Structure
 
-General format:
+The Binder link has the following structure:
 
-`https://mybinder.org/v2/gh/<owner>/<repo>/<ref>?urlpath=<target>`
+```
+https://mybinder.org/v2/gh/{GITHUB_ORGANIZATION}/{BINDER_ENV_REPO}/{BRANCH}?urlpath=git-pull%3Frepo%3D{NOTEBOOKS_REPO}%26branch%3D{BRANCH}%26urlpath%3D{PATH_TO_OPEN}
+```
 
-- `<owner>/<repo>/<ref>`: the repository Binder builds (environment and startup files).
-- `urlpath=<target>`: where Binder sends the user after launch.
+**Components breakdown:**
 
-In this project:
+| Component | Value | Description |
+|-----------|-------|-------------|
+| `{GITHUB_ORGANIZATION}` | `Sigmoid-Learning-Platform-Org` | GitHub organization hosting the Binder environment |
+| `{BINDER_ENV_REPO}` | `binder-env` | Repository containing the Binder configuration and dependencies |
+| `{BRANCH}` | `main` | Branch to use from the binder-env repository |
+| `{NOTEBOOKS_REPO}` | `https://github.com/SigmoidAI/binder-notebooks.git` | This repository URL |
+| `{BRANCH}` | `{branch_name}` | Branch of the notebooks repository to pull (main, develop, etc.) |
+| `{PATH_TO_OPEN}` | `lab/tree/binder-notebooks` | JupyterLab path to open automatically |
 
-- Build source: `SigmoidAI/binder-env` on `main`
-- Pulled content: `SigmoidAI/binder-notebooks`
+### How to Generate Binder Links
 
-### Why `git-pull` is used here
+Use this Python template to generate links for different branches:
 
-`binder-env` provides the runtime environment; `git-pull` fetches this notebooks repo into the live Binder session. This lets you keep environment and course content in separate repositories.
+```python
+def create_binder_link(branch_name="main"):
+    """
+    Generate a Binder link for a specific branch.
+    
+    Args:
+        branch_name (str): Branch name to access (default: "main")
+    
+    Returns:
+        str: Full Binder URL
+    """
+    return f"https://mybinder.org/v2/gh/Sigmoid-Learning-Platform-Org/binder-env/main?urlpath=git-pull%3Frepo%3Dhttps://github.com/SigmoidAI/binder-notebooks%26branch%3D{branch_name}%26urlpath%3Dlab/tree/binder-notebooks"
 
-## Common Binder link patterns
+# Examples:
+main_link = create_binder_link("main")
+develop_link = create_binder_link("develop")
+```
 
-### 1) Open JupyterLab root
+### Common Binder Links
 
-`https://mybinder.org/v2/gh/<owner>/<repo>/<ref>?urlpath=lab`
+#### Main Branch (Stable)
+```
+https://mybinder.org/v2/gh/Sigmoid-Learning-Platform-Org/binder-env/main?urlpath=git-pull%3Frepo%3Dhttps://github.com/SigmoidAI/binder-notebooks%26branch%3Dmain%26urlpath%3Dlab/tree/binder-notebooks
+```
 
-### 2) Open classic notebook tree
+#### Development Branch
+```
+https://mybinder.org/v2/gh/Sigmoid-Learning-Platform-Org/binder-env/main?urlpath=git-pull%3Frepo%3Dhttps://github.com/SigmoidAI/binder-notebooks%26branch%3Ddevelop%26urlpath%3Dlab/tree/binder-notebooks
+```
 
-`https://mybinder.org/v2/gh/<owner>/<repo>/<ref>?urlpath=tree`
+## 📖 Content Organization
 
-### 3) Open a specific file/folder in JupyterLab
+### Lesson 2.1
 
-`https://mybinder.org/v2/gh/<owner>/<repo>/<ref>?urlpath=lab/tree/<path/in/repo>`
+#### Notebooks
+- **Notebook 1** (`lesson_2_1/notebooks/notebook_1/`)
+  - `L2_1_N1_Assignment_EN.ipynb` - Assignment in English
+  - `helper_utils.py` - Utility functions
+  - `unittests.py` - Unit tests for validation
 
-### 4) Build from environment repo, then pull a second repo
+- **Notebook 2** (`lesson_2_1/notebooks/notebook_2/`)
+  - `L2_1_N2_Assignment_EN.ipynb` - Assignment in English
+  - `L2_1_N2_Assignment_RO.ipynb` - Assignment in Romanian
+  - `L2_1_N2_Assignment_solved_EN.ipynb` - Solved version (English)
+  - `L2_1_N2_Assignment_solved_RO.ipynb` - Solved version (Romanian)
+  - `helper_utils.py` - Utility functions
+  - `unittests.py` - Unit tests for validation
 
-`https://mybinder.org/v2/gh/<env-owner>/<env-repo>/<ref>?urlpath=git-pull?repo=https://github.com/<content-owner>/<content-repo>.git`
+#### Theory
+- `L2_1_Theory_EN.md` - Theoretical content in English
+- `L2_1_Theory_RO.md` - Theoretical content in Romanian
 
-## Direct links for this repository content
+#### Quiz
+- `L2_1_Quiz_EN.md` - Quiz questions in English
+- `L2_1_Quiz_RO.md` - Quiz questions in Romanian
 
-After pull, your course content is under `binder-notebooks/`.
+## 🌐 Language Support
 
-### Lesson 2.1 - Notebook 1
+Content is available in multiple languages:
+- **EN** - English
+- **RO** - Romanian
 
-- EN assignment:
-  - `lesson_2_1/notebooks/notebook_1/L2_1_N1_Assignment_EN.ipynb`
-- RO assignment:
-  - `lesson_2_1/notebooks/notebook_1/L2_1_N1_Assignment_RO.ipynb`
-- EN solved:
-  - `lesson_2_1/notebooks/notebook_1/L2_1_N1_Assignment_solved_EN.ipynb`
-- RO solved:
-  - `lesson_2_1/notebooks/notebook_1/L2_1_N1_Assignment_solved_RO.ipynb`
+## 🔧 Running Locally
 
-### Lesson 2.1 - Notebook 2
+To run notebooks locally without Binder:
 
-- EN assignment:
-  - `lesson_2_1/notebooks/notebook_2/L2_1_N2_Assignment_EN.ipynb`
-- RO assignment:
-  - `lesson_2_1/notebooks/notebook_2/L2_1_N2_Assignment_RO.ipynb`
-- EN solved:
-  - `lesson_2_1/notebooks/notebook_2/L2_1_N2_Assignment_solved_EN.ipynb`
-- RO solved:
-  - `lesson_2_1/notebooks/notebook_2/L2_1_N2_Assignment_solved_RO.ipynb`
+1. Clone the repository:
+   ```bash
+   git clone https://github.com/SigmoidAI/binder-notebooks.git
+   cd binder-notebooks
+   ```
 
-### Theory and quiz
+2. Install dependencies (from `binder-env` repository):
+   ```bash
+   pip install -r requirements.txt
+   ```
 
-- Theory EN: `lesson_2_1/theory/L2_1_Theory_EN.md`
-- Theory RO: `lesson_2_1/theory/L2_1_Theory_RO.md`
-- Quiz EN: `lesson_2_1/quiz/L2_1_Quiz_EN.md`
-- Quiz RO: `lesson_2_1/quiz/L2_1_Quiz_RO.md`
+3. Launch Jupyter:
+   ```bash
+   jupyter lab
+   ```
 
-## Optional: launch directly to a notebook after pull
+4. Navigate to your desired notebook and open it.
 
-You can chain `git-pull` and a target path using `urlpath` (URL-encoded). Example (Notebook 1 EN):
+## 📝 Notes
 
-`https://mybinder.org/v2/gh/SigmoidAI/binder-env/main?urlpath=git-pull%3Frepo%3Dhttps://github.com/SigmoidAI/binder-notebooks.git%26urlpath%3Dlab/tree/binder-notebooks/lesson_2_1/notebooks/notebook_1/L2_1_N1_Assignment_EN.ipynb`
+- Binder links pull the latest version from the specified branch automatically
+- Changes to the repository are reflected in new Binder sessions
+- Each Binder session is temporary and data is lost when the session ends
+- For persistent work, clone the repository and run locally
 
-If this feels too complex, use the quick-start link first, then open files from the file browser.
