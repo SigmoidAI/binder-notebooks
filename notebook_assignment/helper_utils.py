@@ -89,8 +89,7 @@ def __create_table(cursor: sqlite3.Cursor, table_name: str) -> None:
     ]
     zipped_col_vals = dict(zip(columns, sqlite_types))
     table_def: list[str] = ["id INTEGER PRIMARY KEY AUTOINCREMENT"] + [" ".join([col_name, col_type]) for col_name, col_type in zipped_col_vals.items()]
-    joined_table_def: str = ",".join(table_def)
-    create_table_sql_query: str = f"CREATE TABLE IF NOT EXISTS {table_name}({joined_table_def})"
+    create_table_sql_query: str = f"CREATE TABLE IF NOT EXISTS {table_name}({",".join(table_def)})"
     
     cursor.execute(create_table_sql_query)
 
@@ -107,9 +106,7 @@ def __populate_table(cursor: sqlite3.Cursor, table_name: str) -> None:
     first_elem: dict = iris_dataset_json[0]
     columns: list[str] = list(first_elem.keys())
     
-    columns_sql: str = ",".join(columns)
-    placeholders_sql: str = ",".join(["?"] * len(columns))
-    sql_query: str = f"INSERT INTO {table_name} ({columns_sql}) VALUES ({placeholders_sql})"
+    sql_query: list[str] = f"INSERT INTO {table_name} ({",".join(columns)}) VALUES ({",".join(["?"] * len(columns))})"
     rows = [tuple(item[col] for col in columns) for item in iris_dataset_json]
     cursor.executemany(sql_query, rows)
 

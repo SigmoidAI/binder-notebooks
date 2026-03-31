@@ -755,4 +755,4 @@ def exercise_6(learner_func):
 
     cases = g()
     print_feedback(cases)
-    # https: // mybinder.org / v2 / gh / malmilo6 / test - binder / main?filepath = lesson_2_1 / notebooks / notebook_1 / L2_1_N1_Assignment_EN.ipynb
+    
