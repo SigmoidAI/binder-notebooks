@@ -1,0 +1,82 @@
+"""Helper utilities for the Feature-Target Relationship Mapping assignment."""
+
+import numpy as np
+import pandas as pd
+import matplotlib
+import matplotlib.pyplot as plt
+
+
+def get_orders_df() -> pd.DataFrame:
+    """
+    Generate the e-commerce orders DataFrame used throughout this assignment.
+
+    Returns a deterministic 300-row DataFrame with the following columns:
+        order_value, days_to_ship, items_ordered, customer_age,
+        region, returned, days_since_last_purchase.
+    """
+    rng = np.random.default_rng(42)
+    n = 300
+    raw_data = {
+        "order_value": rng.exponential(scale=85, size=n).round(2),
+        "days_to_ship": rng.uniform(1, 30, size=n).astype(float),
+        "items_ordered": rng.integers(1, 12, size=n).astype(float),
+        "customer_age": rng.normal(loc=38, scale=11, size=n).clip(18, 75).round(),
+        "region": rng.choice(
+            ["North", "South", "East", "West", "Central"],
+            size=n,
+            p=[0.30, 0.25, 0.20, 0.15, 0.10],
+        ).tolist(),
+        "returned": rng.choice([0, 1], size=n, p=[0.82, 0.18]).tolist(),
+        "days_since_last_purchase": rng.lognormal(mean=3.5, sigma=0.5, size=n).round(1),
+    }
+    return pd.DataFrame(raw_data)
+
+
+def show_context(title: str, description: str) -> None:
+    """Print a formatted section header for context.
+
+    Args:
+        title: Short section title displayed in the header banner.
+        description: Multi-line description printed below the banner.
+    """
+    separator = "=" * 60
+    print(f"\n{separator}")
+    print(f"  {title}")
+    print(separator)
+    print(description)
+    print()
+
+
+def describe_numeric_cols(df: pd.DataFrame) -> pd.DataFrame:
+    """Return descriptive statistics for all numeric columns.
+
+    Args:
+        df: Input DataFrame.
+
+    Returns:
+        DataFrame with mean, std, min, 25%, 50%, 75%, max for each numeric column.
+    """
+    return df.select_dtypes(include="number").describe().T
+
+
+def plot_class_balance(df: pd.DataFrame, target_col: str) -> matplotlib.axes.Axes:
+    """Plot a bar chart showing the class balance of the target column.
+
+    Args:
+        df: Input DataFrame.
+        target_col: Name of the binary target column.
+
+    Returns:
+        matplotlib Axes object.
+    """
+    counts = df[target_col].value_counts().sort_index()
+    fig, ax = plt.subplots(figsize=(5, 3))
+    colors = ["#4C72B0", "#C44E52"]
+    ax.bar(counts.index.astype(str), counts.values, color=colors, edgecolor="white")
+    ax.set_title(f"Class Balance: {target_col}")
+    ax.set_xlabel(target_col)
+    ax.set_ylabel("Count")
+    for i, v in enumerate(counts.values):
+        ax.text(i, v + 1, str(v), ha="center", fontsize=10)
+    plt.tight_layout()
+    return ax
